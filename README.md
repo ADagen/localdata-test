@@ -1,0 +1,1 @@
+Test cookie, LocalStorage, IndexedDB, Storage Access API (https://webkit.org/blog/8124/introducing-storage-access-api/)
