@@ -40,6 +40,7 @@ logCookies('After:');
 
 log('=================================== LocalStorage');
 const storageKey = 'testLocalStorage';
+log('Before:', localStorage.getItem(storageKey));
 const testLocalStorage = Math.random().toString(36).substr(2);
 localStorage.setItem(storageKey, testLocalStorage);
 log(`Add new localStorage item, ${storageKey} = ${ testLocalStorage }`);
