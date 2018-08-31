@@ -15,21 +15,30 @@ function log(...args) {
     document.body.appendChild(logEntry);
 }
 
+function logLn(...args) {
+    log(...args, '<br><br><br>');
+}
+
+function logTitle(title) {
+    log(`<pre>======================= ${title} =======================</pre>`);
+}
+
 function logCookies(title) {
     const content = JSON.stringify(window.Cookies.get(), null, 4);
     log(title, `<pre>${ content }</pre>`);
 }
 
-log('Start');
+logLn('Start test');
 
-log('=================================== Plain Cookie');
+logTitle('Plain Cookie');
 logCookies('Before:');
 const testCookie = Math.random().toString(36).substr(2);
 log(`Add new cookie: testCookie=${ testCookie }`);
 document.cookie = `testCookie=${ testCookie }`;
 logCookies('After:');
+logLn('Finish plain cookie');
 
-log('=================================== Using JS-Cookie');
+logTitle('Using JS-Cookie');
 const MAX_SAFE_INTEGER = 2 ** 31 - 1;
 const MAX_SAFE_DATE = new Date(MAX_SAFE_INTEGER * 1000);
 logCookies('Before:');
@@ -37,16 +46,32 @@ const testJSCookie = Math.random().toString(36).substr(2);
 log(`Add new cookie: testJSCookie=${ testJSCookie }`);
 window.Cookies.set('testJSCookie', testJSCookie, { expires: MAX_SAFE_DATE });
 logCookies('After:');
+logLn('Finish js-cookie');
 
-log('=================================== LocalStorage');
+logTitle('LocalStorage');
 const storageKey = 'testLocalStorage';
 log('Before:', localStorage.getItem(storageKey));
 const testLocalStorage = Math.random().toString(36).substr(2);
 localStorage.setItem(storageKey, testLocalStorage);
 log(`Add new localStorage item, ${storageKey} = ${ testLocalStorage }`);
 log('After:', localStorage.getItem(storageKey));
+logLn('Finish localStorage');
 
-log('=================================== IndexedDB');
-log('N/A');
+logTitle('IndexedDB');
+localforage.config({
+    driver      : localforage.INDEXEDDB, // Force IndexedDB
+    name        : 'localdata-test',
+    version     : 1.0,
+    storeName   : 'test_store',
+    description : 'just test store, please ignore'
+});
 
-log('Finish');
+(async function() {
+    const forageKey = 'testIndexedDB';
+    log('Before:', await localforage.getItem(forageKey));
+    const testIndexedDBValue = Math.random().toString(36).substr(2);
+    log(`Add new indexedDB item, ${forageKey} = ${ testIndexedDBValue }`);
+    await localforage.setItem(forageKey, testIndexedDBValue);
+    log('After:', await localforage.getItem(forageKey));
+    logLn('Finish indexedDB');
+})();
