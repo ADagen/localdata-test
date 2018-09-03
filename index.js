@@ -29,6 +29,7 @@ function logCookies(title) {
 }
 
 logLn('Start test');
+logLn('navigator.userAgent =', window.navigator.userAgent);
 
 logTitle('Plain Cookie');
 logCookies('Before:');
