@@ -29,6 +29,7 @@ function logCookies(title) {
 }
 
 logLn('Start test');
+logLn('windows.history.length = ', windows.history.length);
 logLn('navigator.userAgent =', window.navigator.userAgent);
 
 logTitle('Plain Cookie');
